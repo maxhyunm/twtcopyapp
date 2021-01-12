@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { dbService, storageService } from "fBase";
 import {v4 as uuidv4} from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,7 +35,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        let newAttachmentURL = "";
+        let newAttachmentURL = nweetObj.attachmentURL;
         if(newAttachment !== "") {
             const attachmentRef = storageService.ref().child(`${nweetObj.creatorId}/${uuidv4()}`);
             const response = await attachmentRef.putString(newAttachment, "data_url");
@@ -149,7 +150,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                         <>
                             <h6>{userName} | {date[3]} {date[1]} {date[2]} {date[4]}</h6>
                             <h4>{nweetObj.text}</h4>
-                            {nweetObj.attachmentURL && (<img src={nweetObj.attachmentURL} />)}
+                            {nweetObj.attachmentURL && (<img src={nweetObj.attachmentURL} onClick = {() => window.open(nweetObj.attachmentURL, 'new', 'top=100, left=100')} /> )}
                             {isOwner && (
                                 <div className="nweet__actions">
                                     <span onClick={onDeleteClick}>
